@@ -14,8 +14,18 @@ const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
     const color = position % 4 === 0 ? "orange" : position < 4 ? 'grey' : "#555"
     const isNumber = !isNaN(parseInt(text))
 
+    const isClearButton = text === "AC"
+    const isClearLastButton = text === "\u232B"
+
     const handlePress = () => {
         setDisplayed(prev => {
+            if (isClearButton) {
+                return "0"
+            }
+            if (isClearLastButton) {
+                return prev.length === 1 ? "0" : prev.slice(0, -1)
+            }
+
             const last = prev.slice(-1)
             const newText = (prev + text)
             const zeroRemoved = newText.replace(/^0+(?=\d)/, '').replace(/^,/, '0,')
