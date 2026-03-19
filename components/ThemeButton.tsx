@@ -16,14 +16,22 @@ const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
 
     const isClearButton = text === "AC"
     const isClearLastButton = text === "\u232B"
+    const isNegotiationButton = text === "+/-"
+    const isResultButton = text === "="
 
     const handlePress = () => {
         setDisplayed(prev => {
+            if (isResultButton) {
+                return String(eval(prev))
+            }
             if (isClearButton) {
                 return "0"
             }
             if (isClearLastButton) {
                 return prev.length === 1 ? "0" : prev.slice(0, -1)
+            }
+            if (isNegotiationButton) {
+                return prev !== "0" && Number(prev) ? `(${Number(prev) * - 1})` : prev
             }
 
             const last = prev.slice(-1)
