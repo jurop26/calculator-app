@@ -8,7 +8,9 @@ interface ThemeButtonProps {
 }
 
 const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
-    const color = ((idx + 1) % 4) === 0 ? "orange" : (idx + 1) < 4 ? 'grey' : "#555"
+    const position = idx + 1
+    const color = position % 4 === 0 ? "orange" : position < 4 ? 'grey' : "#555"
+
     return (
         <View style={[styles.button, { backgroundColor: color }]}>
             <Pressable onPress={() => { }}>
