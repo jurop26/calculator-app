@@ -4,10 +4,11 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 interface ThemeButtonProps {
     text: string
-    color?: string
+    idx: number
 }
 
-const ThemeButton = ({ text, color = "gray" }: ThemeButtonProps) => {
+const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
+    const color = ((idx + 1) % 4) === 0 ? "orange" : (idx + 1) < 4 ? 'grey' : "#555"
     return (
         <View style={[styles.button, { backgroundColor: color }]}>
             <Pressable onPress={() => { }}>
