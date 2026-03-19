@@ -1,4 +1,5 @@
 
+import useDisplayed from '@/hooks/useDisplayed'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
@@ -8,17 +9,29 @@ interface ThemeButtonProps {
 }
 
 const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
+    const { setDisplayed } = useDisplayed()
     const position = idx + 1
     const color = position % 4 === 0 ? "orange" : position < 4 ? 'grey' : "#555"
+    const isNumber = !isNaN(parseInt(text))
+
+    const handlePress = () => {
+        setDisplayed(prev => {
+            const last = prev.slice(-1)
+            const newText = (prev + text)
+            const zeroRemoved = newText.replace(/^0+(?=\d)/, '').replace(/^,/, '0,')
+
+            return last === text && !isNumber ? prev : zeroRemoved
+        })
+    }
 
     return (
-        <View style={[styles.button, { backgroundColor: color }]}>
-            <Pressable onPress={() => { }}>
+        <Pressable onPress={handlePress}>
+            <View style={[styles.button, { backgroundColor: color }]}>
                 <Text style={styles.text}>
                     {text}
                 </Text>
-            </Pressable>
-        </View >
+            </View >
+        </Pressable>
     )
 }
 
