@@ -1,0 +1,34 @@
+export const calculateResult = (prev: string) => {
+  try {
+    return String(
+      eval(prev.replaceAll(",", ".").replace("\u00F7", "/")),
+    ).replace(".", ",");
+  } catch {
+    return prev;
+  }
+};
+
+export const toggleLastNumerSign = (prev: string, lastChar: string) => {
+  const nums = prev.match(/-?\d+(?:[.,]\d+)?/g);
+  const lastNumber = nums && nums[nums?.length - 1];
+  const lastNumberLength = lastNumber?.length || 0;
+  const isInBrackets = lastChar === ")";
+
+  if (
+    !nums ||
+    lastNumber === "0" ||
+    (isNaN(Number(lastChar)) && !isInBrackets)
+  ) {
+    return prev;
+  }
+
+  const num = Number(lastNumber?.replace(",", "."));
+  const isNegative = num < 0;
+  const charsToRemove = lastNumberLength + (isInBrackets ? 2 : 0);
+  const removedPart = prev.slice(0, charsToRemove * -1);
+
+  return (
+    removedPart +
+    (isNegative ? num * -1 : `(${num * -1})`).toString().replace(".", ",")
+  );
+};

@@ -1,4 +1,5 @@
 
+import { calculateResult, toggleLastNumerSign } from '@/helpers/helpers'
 import useDisplayed from '@/hooks/useDisplayed'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -12,7 +13,6 @@ const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
     const { setDisplayed } = useDisplayed()
     const position = idx + 1
     const color = position % 4 === 0 ? "orange" : position < 4 ? 'grey' : "#555"
-    const isNumber = !isNaN(parseInt(text))
 
     const isClearButton = text === "AC"
     const isClearLastButton = text === "\u232B"
@@ -21,24 +21,26 @@ const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
 
     const handlePress = () => {
         setDisplayed(prev => {
+            const lastChar = prev.slice(-1)
+            const lastCharRemoved = prev.slice(0, -1)
+
             if (isResultButton) {
-                return String(eval(prev))
+                return calculateResult(prev)
             }
             if (isClearButton) {
                 return "0"
             }
             if (isClearLastButton) {
-                return prev.length === 1 ? "0" : prev.slice(0, -1)
+                return prev.length === 1 ? "0" : lastCharRemoved
             }
             if (isNegotiationButton) {
-                return prev !== "0" && Number(prev) ? `(${Number(prev) * - 1})` : prev
+                return toggleLastNumerSign(prev, lastChar)
             }
 
-            const last = prev.slice(-1)
-            const newText = (prev + text)
+            const newText = isNaN(Number(lastChar)) && isNaN(Number(text)) ? lastCharRemoved + text : prev + text
             const zeroRemoved = newText.replace(/^0+(?=\d)/, '').replace(/^,/, '0,')
 
-            return last === text && !isNumber ? prev : zeroRemoved
+            return zeroRemoved
         })
     }
 
