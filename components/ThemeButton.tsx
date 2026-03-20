@@ -1,5 +1,5 @@
 
-import { calculateResult, toggleLastNumerSign } from '@/helpers/helpers'
+import { calculateResult, toggleLastNumberSign } from '@/helpers/helpers'
 import useDisplayed from '@/hooks/useDisplayed'
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
@@ -34,13 +34,15 @@ const ThemeButton = ({ text, idx }: ThemeButtonProps) => {
                 return prev.length === 1 ? "0" : lastCharRemoved
             }
             if (isNegotiationButton) {
-                return toggleLastNumerSign(prev, lastChar)
+                return toggleLastNumberSign(prev, lastChar)
             }
 
-            const newText = isNaN(Number(lastChar)) && isNaN(Number(text)) ? lastCharRemoved + text : prev + text
-            const zeroRemoved = newText.replace(/^0+(?=\d)/, '').replace(/^,/, '0,')
+            const newText = isNaN(Number(lastChar)) && isNaN(Number(text))
+                ? lastCharRemoved + text
+                : prev + text
 
-            return zeroRemoved
+
+            return newText.replace(/^0+(?=\d)/, '').replace(/^,/, '0,')
         })
     }
 
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 75,
         height: 75,
-        borderRadius: '50%'
+        borderRadius: 75 / 2
     },
     text: {
         color: "white",

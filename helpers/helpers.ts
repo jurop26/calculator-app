@@ -1,14 +1,17 @@
 export const calculateResult = (prev: string) => {
+  const toNum = prev
+    .replaceAll(",", ".")
+    .replaceAll("\u00F7", "/")
+    .replaceAll("\u00D7", "*");
+  console.log(toNum);
   try {
-    return String(
-      eval(prev.replaceAll(",", ".").replace("\u00F7", "/")),
-    ).replace(".", ",");
+    return String(eval(toNum)).replace(".", ",");
   } catch {
     return prev;
   }
 };
 
-export const toggleLastNumerSign = (prev: string, lastChar: string) => {
+export const toggleLastNumberSign = (prev: string, lastChar: string) => {
   const nums = prev.match(/-?\d+(?:[.,]\d+)?/g);
   const lastNumber = nums && nums[nums?.length - 1];
   const lastNumberLength = lastNumber?.length || 0;
