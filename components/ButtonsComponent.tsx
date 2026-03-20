@@ -3,7 +3,6 @@ import React from 'react'
 import { View } from 'react-native'
 import ThemeButton from './ThemeButton'
 
-
 const ButtonsComponent = () => {
 
     return (

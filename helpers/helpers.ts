@@ -1,11 +1,19 @@
+import { MAX_DISPLAY_CHARS } from "@/constants/constants";
+
 export const calculateResult = (prev: string) => {
   const toNum = prev
     .replaceAll(",", ".")
     .replaceAll("\u00F7", "/")
     .replaceAll("\u00D7", "*");
-  console.log(toNum);
+
   try {
-    return String(eval(toNum)).replace(".", ",");
+    const result: number = eval(toNum);
+    const toFixed = Math.max(
+      0,
+      MAX_DISPLAY_CHARS - result.toString().split(".")[0]?.length || 0,
+    );
+
+    return Number(result.toFixed(toFixed)).toString().replace(".", ",");
   } catch {
     return prev;
   }
